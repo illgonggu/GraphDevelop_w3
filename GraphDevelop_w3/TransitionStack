@@ -1,0 +1,36 @@
+//
+//  TransitionStack.swift
+
+import SwiftUI
+
+struct TransitionStack: View{
+    @StateObject var valuePublisher = ValuePublisher()
+    
+    var body: some View{
+        ZStack{
+            RoundedRectangle(cornerRadius: 20)
+                .frame(height: UIScreen.main.bounds.height*0.46)
+            VStack{
+                HStack{
+                    ButtonView(title:"Temperature",value: "\(valuePublisher.temperature) ℃", bgColor: Color.gray)
+                    ButtonView(title:"Humidity",value: "\(valuePublisher.humidity) %", bgColor: Color.gray)
+                }
+                .padding(.bottom,10)
+                HStack{
+                    ButtonView(title:"Sensor1",value: "\(valuePublisher.sensor1)", bgColor: Color.gray)
+                    ButtonView(title:"Sensor2",value: "\(valuePublisher.sensor2)", bgColor: Color.gray)
+                }
+                HStack{
+                    ButtonView(title:"Sensor3",value: "\(valuePublisher.sensor3)", bgColor: Color.gray)
+                    ButtonView(title:"Sensor4",value: "\(valuePublisher.sensor4)", bgColor: Color.gray)
+                }
+            }
+            .padding(.bottom, 10)
+        }
+    }
+}
+struct TransitionStack_Previews: PreviewProvider {
+    static var previews: some View {
+        ButtonStack()
+    }
+}
