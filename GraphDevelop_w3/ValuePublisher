@@ -1,0 +1,100 @@
+//  ValuePublisher.swift
+
+
+import Foundation
+
+
+class ValuePublisher: ObservableObject {
+   
+    
+    @Published var value: Double = 0 //UserDefaults.standard.double(forKey: "ValuePub")
+    @Published var time: Int = UserDefaults.standard.integer(forKey: "ValuePub")
+    @Published var temperature: Double = 0
+    @Published var humidity: Double = 0
+    @Published var sensor1: Double = 0
+    @Published var sensor2: Double = 0
+    @Published var sensor3: Double = 0
+    @Published var sensor4: Double = 0
+    init() {
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+            //createCSV()
+            self.value = Double.random(in: 0..<1.0)
+            self.time += 1
+            self.temperature = Double.random(in: 0.0...100.0)
+            self.humidity = Double.random(in: 0.0...100.0)
+            self.sensor1 = Double.random(in: 0.0...5000.0)
+            self.sensor2 = Double.random(in: 0.0...5000.0)
+            self.sensor3 = Double.random(in: 0.0...5000.0)
+            self.sensor4 = Double.random(in: 0.0...5000.0)
+        }
+    }
+}
+//func createCSV() {
+//
+//    let fileManager = FileManager.default
+//
+//    let folderName = "newCSVFolder"
+//    let csvFileName = "myCSVFile.csv"
+//
+//    // 폴더 생성
+//    let documentUrl = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
+//    let directoryUrl = documentUrl.appendingPathComponent(folderName)
+//    do {
+//        try fileManager.createDirectory(atPath: directoryUrl.path, withIntermediateDirectories: true, attributes: nil)
+//    }
+//    catch let error as NSError {
+//        print("폴더 생성 에러: \(error)")
+//    }
+//
+//    // csv 파일 생성
+//    let fileUrl = directoryUrl.appendingPathComponent(csvFileName)
+//    let fileData = "Temperature,Humidity,Sensor1,Sensor2,Sensor3,Sensor4".data(using: .utf8)
+//
+//    do {
+//        try fileData?.write(to: fileUrl)
+//
+//        print("Writing CSV to: \(fileUrl.path)")
+//    }
+//    catch let error as NSError {
+//        print("CSV파일 생성 에러: \(error)")
+//    }
+//}
+
+public func convertTimeToFitText(time: Int) -> String {
+    // 초와 분을 나눈다.
+    let minute = time / 60
+    let sec = time % 60
+       
+    // 1분이 넘는 경우
+    if minute > 0 {
+      return "0\(minute):\(sec < 10 ? "0\(sec)" : "\(sec)")"
+           
+    // 1 분이 넘지 않는 경우
+    } else {
+      return "00:\(sec < 10 ? "0\(sec)" : "\(sec)")"
+       }
+}
+
+struct Queue<T>{
+    var list = [T]()
+    
+    mutating func enqueue(_ element: T) {
+        list.append(element)
+    }
+    
+    mutating func dequeue() -> T? {
+        if !list.isEmpty {
+            return list.removeFirst()
+        } else {
+            return nil
+        }
+    }
+    
+    func peek() -> T? {
+        if !list.isEmpty {
+            return list[0]
+        } else {
+            return nil
+        }
+    }
+}
