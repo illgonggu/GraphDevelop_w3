@@ -1,0 +1,48 @@
+//
+//  ButtonStack.swift
+
+import SwiftUI
+import Foundation
+struct ButtonStack: View{
+    @StateObject var valuePublisher = ValuePublisher()
+    let userDefaults = UserDefaults.standard
+    var body: some View{
+        VStack{
+            HStack{
+                ButtonView(title:"Temperature",value: "\(String(format: "%.2f", valuePublisher.temperature)) ℃", bgColor: Color.black)
+                ButtonView(title:"Humidity",value: "\(String(format: "%.2f", valuePublisher.humidity)) %RH", bgColor: Color.black)
+            }
+            .padding(.bottom,10)
+            HStack{
+                ButtonView(title:"Sensor1",value: "\(String(format: "%4.0f", valuePublisher.sensor1)) mV", bgColor: Color.gray)
+                ButtonView(title:"Sensor2",value: "\(String(format: "%4.0f", valuePublisher.sensor2)) mV", bgColor: Color.gray)
+            }
+            HStack{
+                ButtonView(title:"Sensor3",value: "\(String(format: "%4.0f", valuePublisher.sensor3)) mV", bgColor: Color.gray)
+                ButtonView(title:"Sensor4",value: "\(String(format: "%4.0f", valuePublisher.sensor4)) mV", bgColor: Color.gray)
+            }
+//            .padding(.bottom,50)
+            .onAppear() {
+                valuePublisher.temperature = userDefaults.value(forKey: "temperature") as? Double ?? 0.0
+                valuePublisher.humidity = userDefaults.value(forKey: "humidity") as? Double ?? 0.0
+                valuePublisher.sensor1 = userDefaults.value(forKey: "sensor1") as? Double ?? 0.0
+                valuePublisher.sensor2 = userDefaults.value(forKey: "sensor2") as? Double ?? 0.0
+                valuePublisher.sensor3 = userDefaults.value(forKey: "sensor3") as? Double ?? 0.0
+                valuePublisher.sensor4 = userDefaults.value(forKey: "sensor4") as? Double ?? 0.0
+            }
+            .onChange(of: valuePublisher.temperature) { value in
+                userDefaults.set(valuePublisher.temperature, forKey: "temperature")
+                userDefaults.set(valuePublisher.humidity, forKey: "humidity")
+                userDefaults.set(valuePublisher.sensor1, forKey: "sensor1")
+                userDefaults.set(valuePublisher.sensor2, forKey: "sensor2")
+                userDefaults.set(valuePublisher.sensor3, forKey: "sensor3")
+                userDefaults.set(valuePublisher.sensor4, forKey: "sensor4")
+            }
+        }
+    }
+}
+struct ButtonStack_Previews: PreviewProvider {
+    static var previews: some View {
+        ButtonStack()
+    }
+}
